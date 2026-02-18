@@ -2,3 +2,9 @@ attic
 node_modules
 pnpm-lock.yaml
 tmp
+_autosave*
+fp-info-cache
+*-bak
+~*
+*-backups
+*.kicad_prl
