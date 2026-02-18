@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update-schematic": "kisch liu/liu.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/"
   },
   "keywords": [],
   "author": "",

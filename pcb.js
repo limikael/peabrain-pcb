@@ -62,10 +62,19 @@ export default async function(sch) {
 		footprint: "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
 	});
 
+	let r5=sch.declare("R5",{
+		symbol: "Device:R",
+		footprint: "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+	});
+
 	let led=sch.declare("D1",{
 		symbol: "Device:LED",
 		footprint: "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-		//footprint: "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+	});
+
+	let d2=sch.declare("D2",{
+		symbol: "Device:D",
+		footprint: "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
 	});
 
 	screw1.pin(1).connect("GND");
@@ -79,7 +88,10 @@ export default async function(sch) {
 	screw2.pin(4).connect("CANL");
 
 	tja1050.pin(1).connect("5V");
-	tja1050.pin(2).connect(esp32.pin(1)); // tx
+	//tja1050.pin(2).connect(esp32.pin(1)); // tx
+	esp32.pin(1).connect(r5.pin(1));
+	tja1050.pin(2).connect(r5.pin(2));
+
 	tja1050.pin(3).connect(esp32.pin(13)); // rx
 	tja1050.pin(4).connect("GND");
 	tja1050.pin(6).connect("CANL");
@@ -92,7 +104,11 @@ export default async function(sch) {
 	vreg.pin(1).connect("12V");
 	vreg.pin(2).connect("GND");
 	vreg.pin(3).connect("GND");
-	vreg.pin(4).connect("5V");
+	//vreg.pin(4).connect("5V");
+
+	d2.pin(1).connect("5V");
+	d2.pin(2).connect(vreg.pin(4));
+
 
 	i2c.pin(1).connect("GND");
 	i2c.pin(2).connect("5V");
