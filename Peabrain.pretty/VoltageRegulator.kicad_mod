@@ -56,7 +56,7 @@
 	(attr smd)
 	(fp_rect
 		(start -2.54 -2.54)
-		(end 40.64 20.32)
+		(end 43.18 20.32)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -94,7 +94,7 @@
 		(uuid "46f5c1c6-c27b-4531-b9d2-c19d52f5116b")
 	)
 	(pad "3" thru_hole circle
-		(at 38.1 17.78)
+		(at 40.64 17.78)
 		(size 2 2)
 		(drill 0.8)
 		(layers "*.Cu" "F.Mask" "F.Paste")
@@ -102,7 +102,7 @@
 		(uuid "878b685e-5add-43d1-8474-f8fe49868147")
 	)
 	(pad "4" thru_hole circle
-		(at 38.1 0)
+		(at 40.64 0)
 		(size 2 2)
 		(drill 0.8)
 		(layers "*.Cu" "F.Mask" "F.Paste")

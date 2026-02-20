@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "update-schematic": "kisch liu/liu.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/"
+    "update-schematic": "kisch liu/liu.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/",
+    "gcode": "./tools/pcb2grbl.js liu/liu.kicad_pcb --mill-output tmp/liu-mill.ngc --drill-output tmp/liu-drill.ngc"
   },
   "keywords": [],
   "author": "",

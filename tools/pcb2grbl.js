@@ -20,6 +20,7 @@ let options={
     pcbFile: program.args[0]
 }
 
+const boardName = path.basename(options.pcbFile, ".kicad_pcb");
 const tempDirPath=".pcb2grbl";
 await fsp.rm(tempDirPath,{force: true, recursive: true});
 await fsp.mkdir(tempDirPath,{recursive: true});
@@ -28,9 +29,16 @@ await runCommand("flatpak",[
     "run","--command=kicad-cli","org.kicad.KiCad",
     "pcb","export","gerbers",
     options.pcbFile,
-    "--layers","B.Cu,Edge.Cuts",
+    "--layers","F.Cu,B.Cu,Edge.Cuts",
     "--output",tempDirPath,
     "--no-x2"
+]);
+
+await runCommand("gerbv",[
+    path.join(tempDirPath,boardName+"-B_Cu.gbl"),
+    path.join(tempDirPath,boardName+"-F_Cu.gtl"),
+    "-o",path.join(tempDirPath,boardName+"-mill.gbr"),
+    "--export","rs274x"
 ]);
 
 await runCommand("flatpak",[
@@ -40,20 +48,22 @@ await runCommand("flatpak",[
     "--output",tempDirPath,
 ]);
 
-const boardName = path.basename(options.pcbFile, ".kicad_pcb");
-
 //console.log(path.join(tempDirPath,boardName+"-B_Cu.gbl"));
 //process.exit();
 
 //flatpak run --command=kicad-cli org.kicad.KiCad pcb export gerbers pcbtest.kicad_pcb --layers B.Cu --output tmp --no-x2
 
-let depths=["-0.1","-0.2","-0.3"];
+//let depths=["-0.1","-0.2","-0.3"];
+//let depths=["-0.1","-0.2","-0.3"];
+let depths=["-0.4"]; //,"-0.2","-0.3"];
 let millContent="";
 
 for (let depth of depths) {
     await runCommand("pcb2gcode",[
       "--noconfigfile",
-      "--back",path.join(tempDirPath,boardName+"-B_Cu.gbl"),
+//      "--back",path.join(tempDirPath,boardName+"-B_Cu.gbl"),
+//      "--back",path.join(tempDirPath,boardName+"-F_Cu.gtl"),
+      "--back",path.join(tempDirPath,boardName+"-mill.gbr"),
       "--output-dir",tempDirPath,
       "--mill-diameters","1",
       "--mill-feed","100",
