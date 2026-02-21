@@ -5,13 +5,12 @@ import os from "os";
 import {program} from "commander";
 import path from "node:path";
 import {runCommand} from "./node-util.js";
-import {gcodeFindMin, gcodeTranslate, gcodeGrblify} from "./gcode-util.js";
+import {gcodeFindMin, gcodeTranslate, gcodeRotate, gcodeGrblify} from "./gcode-util.js";
 
 program
     .description("Grbl friendly wrapper for pcb2gcode.")
     .requiredOption("--mill-output <path>","Gcode for milling.")
     .requiredOption("--drill-output <path>","Gcode for drilling.")
-//    .argument("<gerber>","Input gerber file.")
     .argument("<pcb>","Pcb file.")
 
 await program.parseAsync();
@@ -48,21 +47,14 @@ await runCommand("flatpak",[
     "--output",tempDirPath,
 ]);
 
-//console.log(path.join(tempDirPath,boardName+"-B_Cu.gbl"));
-//process.exit();
-
-//flatpak run --command=kicad-cli org.kicad.KiCad pcb export gerbers pcbtest.kicad_pcb --layers B.Cu --output tmp --no-x2
-
-//let depths=["-0.1","-0.2","-0.3"];
-//let depths=["-0.1","-0.2","-0.3"];
-let depths=["-0.4"]; //,"-0.2","-0.3"];
+let depths=["-0.1","-0.2","-0.3"];
+//let depths=["-0.4"]; //,"-0.2","-0.3"];
+//let depths=["-0.1","-0.25","-0.4"]; //,"-0.2","-0.3"];
 let millContent="";
 
 for (let depth of depths) {
     await runCommand("pcb2gcode",[
       "--noconfigfile",
-//      "--back",path.join(tempDirPath,boardName+"-B_Cu.gbl"),
-//      "--back",path.join(tempDirPath,boardName+"-F_Cu.gtl"),
       "--back",path.join(tempDirPath,boardName+"-mill.gbr"),
       "--output-dir",tempDirPath,
       "--mill-diameters","1",
@@ -112,6 +104,8 @@ let [x,y]=gcodeFindMin(millContent);
 console.log("Min coord: "+x+","+y);
 
 millContent=gcodeTranslate(millContent,[-x,-y]);
+//millContent=gcodeRotate(millContent,90);
+
 console.log("Writing multi pass to: "+options.millOutput);
 await fsp.writeFile(options.millOutput,millContent);
 
@@ -132,4 +126,5 @@ await runCommand("pcb2gcode",[
 let drillContent=await fsp.readFile(path.join(tempDirPath,"drill.ngc"), "utf-8");
 drillContent=gcodeGrblify(drillContent);
 drillContent=gcodeTranslate(drillContent,[-x,-y]);
+//drillContent=gcodeRotate(drillContent,90);
 await fsp.writeFile(options.drillOutput,drillContent);

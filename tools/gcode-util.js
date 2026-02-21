@@ -120,3 +120,58 @@ export function gcodeTranslate(gcode, [dx, dy]) {
         return (code + comment).trimEnd();
     }).join('\n');
 }
+
+/**
+ * Rotate all X/Y coordinates in a G-code file
+ * @param {string} gcode
+ * @param {number} angleDeg Rotation angle in degrees (CCW positive)
+ * @param {[number, number]} pivot [cx, cy] rotation center
+ * @returns {string}
+ */
+export function gcodeRotate(gcode, angleDeg, [cx, cy] = [0, 0]) {
+    const angle = angleDeg * Math.PI / 180;
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
+    const lines = gcode.split(/\r?\n/);
+
+    return lines.map(line => {
+        // Preserve comments
+        const commentMatch = line.match(/(\(.*?\)|;.*)$/);
+        const comment = commentMatch ? commentMatch[0] : '';
+
+        let code = commentMatch
+            ? line.slice(0, commentMatch.index)
+            : line;
+
+        let xMatch = code.match(/X(-?\d*\.?\d+)/i);
+        let yMatch = code.match(/Y(-?\d*\.?\d+)/i);
+
+        if (!xMatch && !yMatch) {
+            return (code + comment).trimEnd();
+        }
+
+        // If one axis is missing, reuse last-known value behavior is NOT assumed
+        // We rotate only when both X and Y are present
+        if (!xMatch || !yMatch) {
+            return (code + comment).trimEnd();
+        }
+
+        const x = parseFloat(xMatch[1]);
+        const y = parseFloat(yMatch[1]);
+
+        // Translate to pivot
+        const dx = x - cx;
+        const dy = y - cy;
+
+        // Rotate
+        const xr = dx * cos - dy * sin + cx;
+        const yr = dx * sin + dy * cos + cy;
+
+        code = code
+            .replace(/X(-?\d*\.?\d+)/i, `X${xr.toFixed(5)}`)
+            .replace(/Y(-?\d*\.?\d+)/i, `Y${yr.toFixed(5)}`);
+
+        return (code + comment).trimEnd();
+    }).join('\n');
+}
