@@ -17,6 +17,16 @@ export default async function(sch) {
 		footprint: "Peabrain:ScrewTerminals_4P",
 	});
 
+	let screw3=sch.declare("J3",{
+		symbol: "Connector_Generic:Conn_01x04",
+		footprint: "Peabrain:ScrewTerminals_4P",
+	});
+
+	let screw4=sch.declare("J4",{
+		symbol: "Connector_Generic:Conn_01x04",
+		footprint: "Peabrain:ScrewTerminals_4P",
+	});
+
 	let vreg=sch.declare("U1",{
 		symbol: "Connector_Generic:Conn_02x02_Counter_Clockwise",
 		footprint: "Peabrain:VoltageRegulator",

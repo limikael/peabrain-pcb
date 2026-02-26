@@ -2065,6 +2065,17 @@
   )
   (wire
     (pts
+      (xy 78.74 27.94)
+      (xy 78.74 38.1)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "4e9237cf-59e2-4962-873d-29f33d69ebd3")
+  )
+  (wire
+    (pts
       (xy 109.22 53.34)
       (xy 109.22 49.53)
     )
@@ -2293,7 +2304,7 @@
     (uuid "1264df14-1b0e-47c9-841d-00957d166932")
   )
   (label "5V"
-    (at 59.69 83.82 180)
+    (at 50.8 35.56 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2343,7 +2354,7 @@
     (uuid "1fc461c8-2ce3-449d-bed4-4d8064c536b6")
   )
   (label "GND"
-    (at 52.07 83.82 180)
+    (at 43.18 35.56 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2353,7 +2364,7 @@
     (uuid "2df2dab7-84b0-4fc6-85ca-969aecc4ca99")
   )
   (label "CANL"
-    (at 54.61 67.31 180)
+    (at 54.61 66.04 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2363,7 +2374,7 @@
     (uuid "4aabc2ca-009b-41ff-8a76-28c2e326d620")
   )
   (label "3V3"
-    (at 67.31 83.82 180)
+    (at 58.42 35.56 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2373,7 +2384,7 @@
     (uuid "5858ec80-e856-4425-9941-12feb763329c")
   )
   (label "12V"
-    (at 54.61 62.23 180)
+    (at 54.61 60.96 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2413,7 +2424,7 @@
     (uuid "7634ac10-85aa-4fbc-bb2d-9344b678deff")
   )
   (label "3V3"
-    (at 67.31 76.2 180)
+    (at 58.42 27.94 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2473,7 +2484,7 @@
     (uuid "b4f1a1d5-bac5-4288-85cc-c9d7b4fca378")
   )
   (label "5V"
-    (at 59.69 76.2 180)
+    (at 50.8 27.94 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2483,7 +2494,7 @@
     (uuid "ba5cabce-e79a-4685-b160-e089183850ef")
   )
   (label "GND"
-    (at 54.61 59.69 180)
+    (at 54.61 58.42 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2523,7 +2534,7 @@
     (uuid "d9ac8d6d-0b39-41e4-933b-ab870543ff30")
   )
   (label "GND"
-    (at 52.07 76.2 180)
+    (at 43.18 27.94 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2553,7 +2564,7 @@
     (uuid "efd966c7-b6d7-4171-9317-23856a082f10")
   )
   (label "CANH"
-    (at 54.61 64.77 180)
+    (at 54.61 63.5 180)
     (effects
       (font
         (size 1.27 1.27)
@@ -2574,7 +2585,7 @@
   )
   (symbol
     (lib_id "Device:R")
-    (at 52.07 80.01 0)
+    (at 43.18 31.75 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -2583,7 +2594,7 @@
     (fields_autoplaced yes)
     (uuid "1afbf336-0c73-46ae-9b10-e2325df96fa3")
     (property "Reference" "R1"
-      (at 54.61 78.7399 0)
+      (at 45.72 30.4799 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -2592,7 +2603,7 @@
       )
     )
     (property "Value" "R"
-      (at 54.61 81.2799 0)
+      (at 45.72 33.0199 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -2601,7 +2612,7 @@
       )
     )
     (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
-      (at 50.292 80.01 90)
+      (at 41.402 31.75 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -2610,7 +2621,7 @@
       )
     )
     (property "Datasheet" "~"
-      (at 52.07 80.01 0)
+      (at 43.18 31.75 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -2619,7 +2630,7 @@
       )
     )
     (property "Description" "Resistor"
-      (at 52.07 80.01 0)
+      (at 43.18 31.75 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -2880,7 +2891,7 @@
   )
   (symbol
     (lib_id "Device:R")
-    (at 59.69 80.01 0)
+    (at 50.8 31.75 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -2889,7 +2900,7 @@
     (fields_autoplaced yes)
     (uuid "436a4eec-a132-48eb-8fe6-e530819f0a6e")
     (property "Reference" "R2"
-      (at 62.23 78.7399 0)
+      (at 53.34 30.4799 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -2898,7 +2909,7 @@
       )
     )
     (property "Value" "R"
-      (at 62.23 81.2799 0)
+      (at 53.34 33.0199 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -2907,7 +2918,7 @@
       )
     )
     (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
-      (at 57.912 80.01 90)
+      (at 49.022 31.75 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -2916,7 +2927,7 @@
       )
     )
     (property "Datasheet" "~"
-      (at 59.69 80.01 0)
+      (at 50.8 31.75 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -2925,7 +2936,7 @@
       )
     )
     (property "Description" "Resistor"
-      (at 59.69 80.01 0)
+      (at 50.8 31.75 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3206,16 +3217,16 @@
   )
   (symbol
     (lib_id "Connector_Generic:Conn_01x04")
-    (at 59.69 62.23 0)
+    (at 59.69 73.66 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
     (fields_autoplaced yes)
-    (uuid "7e5205bf-da42-4447-a08e-4a7f761440b6")
-    (property "Reference" "J2"
-      (at 62.23 62.2299 0)
+    (uuid "7cba8b6b-e749-4c56-91c6-52567627b7c4")
+    (property "Reference" "J3"
+      (at 62.23 73.6599 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3223,8 +3234,8 @@
         (justify left)
       )
     )
-    (property "Value" "Screw Terminal"
-      (at 62.23 64.7699 0)
+    (property "Value" "Screw Termial"
+      (at 62.23 76.1999 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3233,7 +3244,7 @@
       )
     )
     (property "Footprint" "Peabrain:ScrewTerminals_4P"
-      (at 59.69 62.23 0)
+      (at 59.69 73.66 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3242,7 +3253,7 @@
       )
     )
     (property "Datasheet" "~"
-      (at 59.69 62.23 0)
+      (at 59.69 73.66 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3251,7 +3262,83 @@
       )
     )
     (property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
-      (at 59.69 62.23 0)
+      (at 59.69 73.66 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "3"
+      (uuid "c1b9dea8-24bf-4a52-b6a8-0e529144083a")
+    )
+    (pin "2"
+      (uuid "7494263a-34b2-42e7-a61c-b0c11439ef7f")
+    )
+    (pin "1"
+      (uuid "9534cae9-048a-4601-9e18-8bcb9f920989")
+    )
+    (pin "4"
+      (uuid "430bba3f-0307-407a-b467-1e13ebe1cff2")
+    )
+    (instances
+      (project "liu"
+        (path "/94a9126b-1049-4434-a6c7-ce4492ba55c0"
+          (reference "J3")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x04")
+    (at 59.69 60.96 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid "7e5205bf-da42-4447-a08e-4a7f761440b6")
+    (property "Reference" "J2"
+      (at 62.23 60.9599 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "Screw Terminal"
+      (at 62.23 63.4999 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Peabrain:ScrewTerminals_4P"
+      (at 59.69 60.96 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (at 59.69 60.96 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+      (at 59.69 60.96 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3511,17 +3598,17 @@
     )
   )
   (symbol
-    (lib_id "Device:R")
-    (at 67.31 80.01 0)
+    (lib_id "Connector_Generic:Conn_01x04")
+    (at 59.69 86.36 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
     (fields_autoplaced yes)
-    (uuid "e2abe5f0-3ce0-4174-886f-2f8769787198")
-    (property "Reference" "R3"
-      (at 69.85 78.7399 0)
+    (uuid "c1fc8700-18ed-41f9-bf4d-f801af5b9ad2")
+    (property "Reference" "J4"
+      (at 62.23 86.3599 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3529,8 +3616,8 @@
         (justify left)
       )
     )
-    (property "Value" "R"
-      (at 69.85 81.2799 0)
+    (property "Value" "Screw Termial"
+      (at 62.23 88.8999 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3538,8 +3625,8 @@
         (justify left)
       )
     )
-    (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
-      (at 65.532 80.01 90)
+    (property "Footprint" "Peabrain:ScrewTerminals_4P"
+      (at 59.69 86.36 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3548,7 +3635,83 @@
       )
     )
     (property "Datasheet" "~"
-      (at 67.31 80.01 0)
+      (at 59.69 86.36 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+      (at 59.69 86.36 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "3"
+      (uuid "b3ff884c-ae2e-4023-8947-57b981936091")
+    )
+    (pin "2"
+      (uuid "b18a3b1f-a7d5-470b-a8fe-9994d126d91d")
+    )
+    (pin "1"
+      (uuid "a91af78f-5ff6-4ada-8b36-864eabf9587f")
+    )
+    (pin "4"
+      (uuid "fb122868-8830-462b-9767-a5b1db6f1e8e")
+    )
+    (instances
+      (project "liu"
+        (path "/94a9126b-1049-4434-a6c7-ce4492ba55c0"
+          (reference "J4")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:R")
+    (at 58.42 31.75 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid "e2abe5f0-3ce0-4174-886f-2f8769787198")
+    (property "Reference" "R3"
+      (at 60.96 30.4799 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "R"
+      (at 60.96 33.0199 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+      (at 56.642 31.75 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (at 58.42 31.75 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3557,7 +3720,7 @@
       )
     )
     (property "Description" "Resistor"
-      (at 67.31 80.01 0)
+      (at 58.42 31.75 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3658,28 +3821,6 @@
         )
       )
     )
-  )
-  (wire
-    (pts
-      (xy 78.74000000000001 27.94)
-      (xy 78.74 29.21)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "eaf483e4-e5aa-46b4-b58f-592b68044f96")
-  )
-  (wire
-    (pts
-      (xy 78.74 29.21)
-      (xy 78.74 38.1)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "4e9237cf-59e2-4962-873d-29f33d69ebd3")
   )
   (uuid "94a9126b-1049-4434-a6c7-ce4492ba55c0")
 )
