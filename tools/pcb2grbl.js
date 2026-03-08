@@ -10,7 +10,9 @@ import {gcodeFindMin, gcodeTranslate, gcodeRotate, gcodeGrblify} from "./gcode-u
 program
     .description("Grbl friendly wrapper for pcb2gcode.")
     .requiredOption("--mill-output <path>","Gcode for milling.")
-    .requiredOption("--drill-output <path>","Gcode for drilling.")
+    .option("--drill-output <path>","Gcode for drilling.")
+    .option("--rotate","Rotate board.")
+    .option("--no-traces","Skip traces.")
     .argument("<pcb>","Pcb file.")
 
 await program.parseAsync();
@@ -33,12 +35,14 @@ await runCommand("flatpak",[
     "--no-x2"
 ]);
 
-await runCommand("gerbv",[
-    path.join(tempDirPath,boardName+"-B_Cu.gbl"),
-    path.join(tempDirPath,boardName+"-F_Cu.gtl"),
-    "-o",path.join(tempDirPath,boardName+"-mill.gbr"),
-    "--export","rs274x"
-]);
+if (options.traces) {
+    await runCommand("gerbv",[
+        path.join(tempDirPath,boardName+"-B_Cu.gbl"),
+        path.join(tempDirPath,boardName+"-F_Cu.gtl"),
+        "-o",path.join(tempDirPath,boardName+"-mill.gbr"),
+        "--export","rs274x"
+    ]);
+}
 
 await runCommand("flatpak",[
     "run","--command=kicad-cli","org.kicad.KiCad",
@@ -47,35 +51,38 @@ await runCommand("flatpak",[
     "--output",tempDirPath,
 ]);
 
-let depths=["-0.1","-0.2","-0.3"];
-//let depths=["-0.4"]; //,"-0.2","-0.3"];
+let depths=["-0.2"];
+//let depths=["-0.1","-0.3"];
+//let depths=["-0.7"]; //,"-0.2","-0.3"];
 //let depths=["-0.1","-0.25","-0.4"]; //,"-0.2","-0.3"];
 let millContent="";
 
-for (let depth of depths) {
-    await runCommand("pcb2gcode",[
-      "--noconfigfile",
-      "--back",path.join(tempDirPath,boardName+"-mill.gbr"),
-      "--output-dir",tempDirPath,
-      "--mill-diameters","1",
-      "--mill-feed","100",
-      "--mill-speed","10000",
-      "--zwork",depth,
-      "--zsafe","1.0",
-      "--zchange","5.0",
-      "--eulerian-paths","0",
-      "--tsp-2opt","0",
-      "--path-finding-limit","1",
-      "--voronoi","0",
-      "--isolation-width","0",
-      "--nom6","1",
-      "--metric",
-      "--metricoutput","1",
-    ]);
+if (options.traces) {
+    for (let depth of depths) {
+        await runCommand("pcb2gcode",[
+          "--noconfigfile",
+          "--back",path.join(tempDirPath,boardName+"-mill.gbr"),
+          "--output-dir",tempDirPath,
+          "--mill-diameters","1",
+          "--mill-feed","100",
+          "--mill-speed","10000",
+          "--zwork",depth,
+          "--zsafe","1.0",
+          "--zchange","5.0",
+          "--eulerian-paths","0",
+          "--tsp-2opt","0",
+          "--path-finding-limit","1",
+          "--voronoi","0",
+          "--isolation-width","1.5",
+          "--nom6","1",
+          "--metric",
+          "--metricoutput","1",
+        ]);
 
-    console.log("Converting file to grbl, depth: "+depth);
-    let gcode=fs.readFileSync(path.join(tempDirPath,"back.ngc"), "utf-8")
-    millContent+=gcodeGrblify(gcode);
+        console.log("Converting file to grbl, depth: "+depth);
+        let gcode=fs.readFileSync(path.join(tempDirPath,"back.ngc"), "utf-8")
+        millContent+=gcodeGrblify(gcode);
+    }
 }
 
 for (let depth of depths) {
@@ -104,27 +111,33 @@ let [x,y]=gcodeFindMin(millContent);
 console.log("Min coord: "+x+","+y);
 
 millContent=gcodeTranslate(millContent,[-x,-y]);
-//millContent=gcodeRotate(millContent,90);
+
+if (options.rotate)
+    millContent=gcodeRotate(millContent,90);
 
 console.log("Writing multi pass to: "+options.millOutput);
 await fsp.writeFile(options.millOutput,millContent);
 
-await runCommand("pcb2gcode",[
-    "--noconfigfile",
-    "--drill",path.join(tempDirPath,boardName+".drl"),
-    "--drill-feed","20",
-    "--drill-speed","10000",
-    "--zdrill","-2.0", // 2.0 to make sure, PCB thickness is actually 1.6
-    "--output-dir",tempDirPath,
-    "--zsafe","1.0",
-    "--zchange","5.0",
-    "--drill-side","back",
-    "--metric",
-    "--metricoutput","1",
-]);
+if (options.drillOutput) {
+    await runCommand("pcb2gcode",[
+        "--noconfigfile",
+        "--drill",path.join(tempDirPath,boardName+".drl"),
+        "--drill-feed","20",
+        "--drill-speed","10000",
+        "--zdrill","-2.2", // 2.0 to make sure, PCB thickness is actually 1.6
+        "--output-dir",tempDirPath,
+        "--zsafe","1.0",
+        "--zchange","5.0",
+        "--drill-side","back",
+        "--metric",
+        "--metricoutput","1",
+    ]);
 
-let drillContent=await fsp.readFile(path.join(tempDirPath,"drill.ngc"), "utf-8");
-drillContent=gcodeGrblify(drillContent);
-drillContent=gcodeTranslate(drillContent,[-x,-y]);
-//drillContent=gcodeRotate(drillContent,90);
-await fsp.writeFile(options.drillOutput,drillContent);
+    let drillContent=await fsp.readFile(path.join(tempDirPath,"drill.ngc"), "utf-8");
+    drillContent=gcodeGrblify(drillContent);
+    drillContent=gcodeTranslate(drillContent,[-x,-y]);
+    if (options.rotate)
+        drillContent=gcodeRotate(drillContent,90);
+
+    await fsp.writeFile(options.drillOutput,drillContent);
+}

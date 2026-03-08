@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "update-schematic": "kisch liu/liu.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/",
-    "gcode": "./tools/pcb2grbl.js liu/liu.kicad_pcb --mill-output tmp/liu-mill.ngc --drill-output tmp/liu-drill.ngc"
+    "schematic": "pnpm schematic:liu && pnpm schematic:gpio",
+    "schematic:liu": "kisch liu/liu.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/ -Dvariant=liu",
+    "schematic:gpio": "kisch gpio/gpio.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/ -Dvariant=gpio",
+    "gcode:liu": "./tools/pcb2grbl.js liu/liu.kicad_pcb --mill-output tmp/liu-mill.ngc --drill-output tmp/liu-drill.ngc",
+    "gcode:gpio": "./tools/pcb2grbl.js gpio/gpio.kicad_pcb --mill-output tmp/gpio-mill.ngc --drill-output tmp/gpio-drill.ngc",
+    "gcode:calibrate": "./tools/pcb2grbl.js calibrate/calibrate.kicad_pcb --mill-output tmp/calibrate-mill.ngc --no-traces"
   },
   "keywords": [],
   "author": "",

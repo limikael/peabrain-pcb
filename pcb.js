@@ -1,11 +1,11 @@
-export default async function(sch) {
-	await sch.use([
+export default async function(sch, {variant}) {
+	/*await sch.use([
 		"Connector_Generic:Conn_01x04",
 		"Connector_Generic:Conn_02x02_Counter_Clockwise",
 		"Connector_Generic:Conn_02x08_Counter_Clockwise",
 		"Connector_Generic:Conn_02x04_Counter_Clockwise",
 		"Device:R"
-	]);
+	]);*/
 
 	let screw1=sch.declare("J1",{
 		symbol: "Connector_Generic:Conn_01x04",
@@ -42,15 +42,18 @@ export default async function(sch) {
 		footprint: "Peabrain:TJA1050",
 	});
 
-	let i2c=sch.declare("J5",{
-		symbol: "Connector_Generic:Conn_01x04",
-		footprint: "Peabrain:I2C_Connector",
-	});
+	let i2c, rotary;
+	if (variant=="liu") {
+		i2c=sch.declare("J5",{
+			symbol: "Connector_Generic:Conn_01x04",
+			footprint: "Peabrain:I2C_Connector",
+		});
 
-	let rotary=sch.declare("J6",{
-		symbol: "Connector_Generic:Conn_01x05",
-		footprint: "Peabrain:RotaryEncoderConnection",
-	});
+		rotary=sch.declare("J6",{
+			symbol: "Connector_Generic:Conn_01x05",
+			footprint: "Peabrain:RotaryEncoderConnection",
+		});
+	}
 
 	let r1=sch.declare("R1",{
 		symbol: "Device:R",
@@ -77,6 +80,19 @@ export default async function(sch) {
 		footprint: "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
 	});
 
+	let r6=sch.declare("R6",{
+		symbol: "Device:R",
+		footprint: "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+	});
+
+	let r7;
+	if (variant=="gpio") {
+		r7=sch.declare("R7",{
+			symbol: "Device:R",
+			footprint: "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+		});
+	}
+
 	let led=sch.declare("D1",{
 		symbol: "Device:LED",
 		footprint: "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
@@ -87,60 +103,90 @@ export default async function(sch) {
 		footprint: "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
 	});
 
+	// CAN
+	esp32.pin(13).connect(r5.pin(1));
+	esp32.pin(1).connect(r6.pin(1));
+
+	tja1050.pin(1).connect("5V");
+	tja1050.pin(2).connect(r6.pin(2)); // tx
+	tja1050.pin(3).connect(r5.pin(2)); // rx
+	tja1050.pin(4).connect("GND");
+	tja1050.pin(6).connect("CANL");
+	tja1050.pin(7).connect("CANH");
+
+	// ESP power
+	esp32.pin(14).connect("3V3");
+	esp32.pin(15).connect("GND");
+	esp32.pin(16).connect("5V");
+
+	// VREG
+	vreg.pin(1).connect("12V");
+	vreg.pin(2).connect("GND");
+	vreg.pin(3).connect("GND");
+	d2.pin(1).connect("5V");
+	d2.pin(2).connect(vreg.pin(4));
+
+	// 0ohm
+	r1.pin(1).connect("GND");
+	r1.pin(2).connect("GND");
+	r2.pin(1).connect("5V");
+	r2.pin(2).connect("5V");
+	r3.pin(1).connect("3V3");
+	r3.pin(2).connect("3V3");
+
+	// Status LED
+	r4.pin(1).connect(led.pin(1));
+	r4.pin(2).connect(esp32.pin(4)); // GPIO8 for status LED
+	led.pin(2).connect("3V3");
+
 	screw1.pin(1).connect("GND");
 	screw1.pin(2).connect("12V");
 	screw1.pin(3).connect("CANH");
 	screw1.pin(4).connect("CANL");
 
-	screw2.pin(1).connect("GND");
-	screw2.pin(2).connect("12V");
-	screw2.pin(3).connect("CANH");
-	screw2.pin(4).connect("CANL");
+	if (variant=="liu") {
+		screw2.pin(1).connect("GND");
+		screw2.pin(2).connect("12V");
+		screw2.pin(3).connect("CANH");
+		screw2.pin(4).connect("CANL");
 
-	tja1050.pin(1).connect("5V");
-	//tja1050.pin(2).connect(esp32.pin(1)); // tx
-	esp32.pin(1).connect(r5.pin(1));
-	tja1050.pin(2).connect(r5.pin(2));
+		i2c.pin(1).connect("GND");
+		i2c.pin(2).connect("5V");
+		i2c.pin(3).connect(esp32.pin(9)); // sda, gpio 0
+		i2c.pin(4).connect(esp32.pin(10)); // slc, gpio 1
 
-	tja1050.pin(3).connect(esp32.pin(13)); // rx
-	tja1050.pin(4).connect("GND");
-	tja1050.pin(6).connect("CANL");
-	tja1050.pin(7).connect("CANH");
+		rotary.pin(1).connect("GND");
+		rotary.pin(2).connect("3V3");
+		rotary.pin(3).connect(esp32.pin(6))
+		rotary.pin(4).connect(esp32.pin(7));
+		rotary.pin(5).connect(esp32.pin(8))
+	}
 
-	esp32.pin(14).connect("3V3");
-	esp32.pin(15).connect("GND");
-	esp32.pin(16).connect("5V");
+	if (variant=="gpio") {
+		screw2.pin(1).connect("GND");
+		screw2.pin(2).connect("3V3");
+		screw2.pin(3).connect(esp32.pin(9));
+		screw2.pin(4).connect(esp32.pin(10));
 
-	vreg.pin(1).connect("12V");
-	vreg.pin(2).connect("GND");
-	vreg.pin(3).connect("GND");
-	//vreg.pin(4).connect("5V");
+		screw3.pin(1).connect("GND");
+		screw3.pin(2).connect("3V3");
+		screw3.pin(3).connect(r7.pin(2)); esp32.pin(12).connect(r7.pin(1));
+		screw3.pin(4).connect(esp32.pin(2));
 
-	d2.pin(1).connect("5V");
-	d2.pin(2).connect(vreg.pin(4));
+		screw4.pin(1).connect(esp32.pin(3));
+		screw4.pin(2).connect(esp32.pin(6));
+		screw4.pin(3).connect(esp32.pin(7));
+		screw4.pin(4).connect(esp32.pin(8));
 
-
-	i2c.pin(1).connect("GND");
-	i2c.pin(2).connect("5V");
-	i2c.pin(3).connect(esp32.pin(4)); // sda, gpio 8
-	i2c.pin(4).connect(esp32.pin(5)); // slc, gpio 9
-
-	rotary.pin(1).connect("GND");
-	rotary.pin(2).connect("3V3");
-	rotary.pin(3).connect(esp32.pin(6))
-	rotary.pin(4).connect(esp32.pin(7));
-	rotary.pin(5).connect(esp32.pin(8))
-
-	r1.pin(1).connect("GND");
-	r1.pin(2).connect("GND");
-
-	r2.pin(1).connect("5V");
-	r2.pin(2).connect("5V");
-
-	r3.pin(1).connect("3V3");
-	r3.pin(2).connect("3V3");
-
-	r4.pin(1).connect(esp32.pin(9));
-	r4.pin(2).connect(led.pin(1));
-	led.pin(2).connect("3V3");
+		/*
+		IO1  GPIO0  // 9
+		IO2  GPIO1  // 10
+		IO3  GPIO3  // 12
+		IO4  GPIO6  // 2
+		IO5  GPIO7  // 3
+		IO6  GPIO10 // 6
+		IO7  GPIO20 // 7
+		IO8  GPIO21 // 8
+		*/
+	}
 }
