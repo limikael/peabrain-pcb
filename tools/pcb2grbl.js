@@ -51,7 +51,7 @@ await runCommand("flatpak",[
     "--output",tempDirPath,
 ]);
 
-let depths=["-0.2"];
+let depths=["-0.3"];
 //let depths=["-0.1","-0.3"];
 //let depths=["-0.7"]; //,"-0.2","-0.3"];
 //let depths=["-0.1","-0.25","-0.4"]; //,"-0.2","-0.3"];
@@ -63,7 +63,7 @@ if (options.traces) {
           "--noconfigfile",
           "--back",path.join(tempDirPath,boardName+"-mill.gbr"),
           "--output-dir",tempDirPath,
-          "--mill-diameters","1",
+          "--mill-diameters","0.8",
           "--mill-feed","100",
           "--mill-speed","10000",
           "--zwork",depth,
@@ -73,7 +73,7 @@ if (options.traces) {
           "--tsp-2opt","0",
           "--path-finding-limit","1",
           "--voronoi","0",
-          "--isolation-width","1.5",
+          "--isolation-width","1.2",
           "--nom6","1",
           "--metric",
           "--metricoutput","1",

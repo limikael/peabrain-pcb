@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "schematic": "pnpm schematic:liu && pnpm schematic:gpio",
+    "schematic": "pnpm schematic:liu && pnpm schematic:gpio && pnpm schematic:motor",
     "schematic:liu": "kisch liu/liu.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/ -Dvariant=liu",
     "schematic:gpio": "kisch gpio/gpio.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/ -Dvariant=gpio",
+    "schematic:motor": "kisch motor/motor.kicad_sch -s pcb.js -L /home/micke/Repo.ext/kicad-symbols/ -Dvariant=motor",
     "gcode:liu": "./tools/pcb2grbl.js liu/liu.kicad_pcb --mill-output tmp/liu-mill.ngc --drill-output tmp/liu-drill.ngc",
     "gcode:gpio": "./tools/pcb2grbl.js gpio/gpio.kicad_pcb --mill-output tmp/gpio-mill.ngc --drill-output tmp/gpio-drill.ngc",
+    "gcode:motor": "./tools/pcb2grbl.js motor/motor.kicad_pcb --mill-output tmp/motor-mill.ngc --drill-output tmp/motor-drill.ngc",
     "gcode:calibrate": "./tools/pcb2grbl.js calibrate/calibrate.kicad_pcb --mill-output tmp/calibrate-mill.ngc --no-traces"
   },
   "keywords": [],
