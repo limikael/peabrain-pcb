@@ -14,6 +14,21 @@ export function declareResistor(sch, ref, ohm) {
     });
 }
 
+export function declareDiode(sch, ref, type) {
+    switch (type.toLowerCase()) {
+        case "ss14":
+            return sch.declare(ref,{
+                symbol: "Device:D",
+                footprint: "Diode_SMD:D_SMA",
+                lcsc: "C2480"
+            });
+            break;
+
+        default:
+            throw new Error("unknown diode: "+type);
+    }
+}
+
 export function declareCapacitor(sch, ref, farad) {
     let partsByFarad={
         "47u": "C76659",
@@ -37,6 +52,22 @@ export function declareCapacitor(sch, ref, farad) {
         footprint: "Capacitor_SMD:C_0603_1608Metric",
         lcsc: partsByFarad[farad]
     });
+}
+
+export function declareMalePinHeader(sch, ref, pins) {
+    switch (pins) {
+        case 2:
+            return sch.declare(ref,{
+                symbol: "Connector_Generic:Conn_01x02",
+                footprint: "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical",
+                lcsc: "C32713268",
+                lcscRot: 90
+            });
+            break;
+
+        default:
+            throw new Error("can't hanlde pins");
+    }
 }
 
 export function declarePinHeader(sch, ref, pins) {
