@@ -14,6 +14,21 @@ export function declareResistor(sch, ref, ohm) {
     });
 }
 
+export function declareCapacitor(sch, ref, farad) {
+    let partsByFarad={
+        "47u": "C76659"
+    };
+
+    if (!partsByFarad[farad])
+        throw new Error("not found!");
+
+    return sch.declare(ref,{
+        symbol: "Device:C",
+        footprint: "Capacitor_SMD:C_1206_3216Metric",
+        lcsc: partsByFarad[farad]
+    });
+}
+
 export function declarePinHeader(sch, ref, pins) {
     switch (pins) {
         case 2:

@@ -1,11 +1,11 @@
 import {declareResistor, declarePinHeader, declareEsp32,
 		declareTja1050, declareScrewTerminal, declareDrv8825,
-		declareMp1584} from "../js/component-declarations.js";
+		declareMp1584, declareCapacitor} from "../js/component-declarations.js";
 
 /*
 todo!
 
-- capacitor
+x capacitor
 - limit sw w/ pullup
 - status led
 - diode (power oring)
@@ -21,6 +21,7 @@ export default async function(sch, {variant}) {
 	let mp1584=declareMp1584(sch,"U5","U6","U7","U8");
 	let drv8825=declareDrv8825(sch,"U9","U10");
 	let r1=declareResistor(sch,"R1",4700);
+	let c1=declareCapacitor(sch,"C1","47u");
 
 	screw1.connect("GND","12V","CANH","CANL");
 	screw2.connect("GND","VMOT","","");
@@ -53,6 +54,8 @@ export default async function(sch, {variant}) {
 	drv8825.b2.connect(screw4.pin(4));
 	drv8825.gnd2.connect("GND");
 	drv8825.vmot.connect("VMOT");
+
+	c1.connect("VMOT","GND");
 
 	mp1584.vin.connect("12V");
 	mp1584.gndin.connect("GND");
