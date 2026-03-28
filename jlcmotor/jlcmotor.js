@@ -6,25 +6,36 @@ import {declareResistor, declarePinHeader, declareEsp32,
 todo!
 
 x capacitor
-- limit sw w/ pullup
+x limit sw w/ pullup
 - status led
 - diode (power oring)
 */
 
 export default async function(sch, {variant}) {
-	let screw1=declareScrewTerminal(sch,"J1");
-	let screw2=declareScrewTerminal(sch,"J2");
-	let screw3=declareScrewTerminal(sch,"J3");
-	let screw4=declareScrewTerminal(sch,"J4");
-	let esp32=declareEsp32(sch,"U1","U2");
-	let tja1050=declareTja1050(sch,"U3","U4");
-	let mp1584=declareMp1584(sch,"U5","U6","U7","U8");
-	let drv8825=declareDrv8825(sch,"U9","U10");
-	let r1=declareResistor(sch,"R1",4700);
-	let c1=declareCapacitor(sch,"C1","47u");
+	let screw1 = declareScrewTerminal(sch,"J1");
+	let screw2 = declareScrewTerminal(sch,"J2");
+	let screw3 = declareScrewTerminal(sch,"J3");
+	let screw4 = declareScrewTerminal(sch,"J4");
+
+	let esp32 = declareEsp32(sch,"U1","U2");
+	let tja1050 = declareTja1050(sch,"U3","U4");
+	let mp1584 = declareMp1584(sch,"U5","U6","U7","U8");
+	let drv8825 = declareDrv8825(sch,"U9","U10");
+
+	let r1 = declareResistor(sch,"R1",4700);
+	let c1 = declareCapacitor(sch,"C1","47u");
+
+	// limit switch components
+	let r2 = declareResistor(sch,"R2",4700);
+	let r3 = declareResistor(sch,"R3",4700);
+	let c2 = declareCapacitor(sch,"C2","100n");
+	let c3 = declareCapacitor(sch,"C3","100n");
 
 	screw1.connect("GND","12V","CANH","CANL");
 	screw2.connect("GND","VMOT","","");
+
+	// J3: GND, SW1, GND, SW2 (signals left unnamed)
+	screw3.connect("GND","","GND","");
 
 	esp32._5v.connect("5V");
 	esp32._3v3.connect("3V3");
@@ -56,6 +67,18 @@ export default async function(sch, {variant}) {
 	drv8825.vmot.connect("VMOT");
 
 	c1.connect("VMOT","GND");
+
+	// --- Limit switch SW1 (GPIO7) ---
+	let sw1 = screw3.pin(2);
+	r2.connect("3V3", sw1);
+	c2.connect(sw1, "GND");
+	esp32.gpio7.connect(sw1);
+
+	// --- Limit switch SW2 (GPIO20) ---
+	let sw2 = screw3.pin(4);
+	r3.connect("3V3", sw2);
+	c3.connect(sw2, "GND");
+	esp32.gpio20.connect(sw2);
 
 	mp1584.vin.connect("12V");
 	mp1584.gndin.connect("GND");

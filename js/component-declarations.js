@@ -16,15 +16,25 @@ export function declareResistor(sch, ref, ohm) {
 
 export function declareCapacitor(sch, ref, farad) {
     let partsByFarad={
-        "47u": "C76659"
+        "47u": "C76659",
+        "100n": "C53084461"
     };
 
     if (!partsByFarad[farad])
-        throw new Error("not found!");
+        throw new Error("No capacitor for: "+farad);
+
+    // 1206 package
+    if (["47u"].includes(farad)) {
+        return sch.declare(ref,{
+            symbol: "Device:C",
+            footprint: "Capacitor_SMD:C_1206_3216Metric",
+            lcsc: partsByFarad[farad]
+        });
+    }
 
     return sch.declare(ref,{
         symbol: "Device:C",
-        footprint: "Capacitor_SMD:C_1206_3216Metric",
+        footprint: "Capacitor_SMD:C_0603_1608Metric",
         lcsc: partsByFarad[farad]
     });
 }
