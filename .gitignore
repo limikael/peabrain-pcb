@@ -9,3 +9,5 @@ fp-info-cache
 *-backups
 *.kicad_prl
 .pcb2grbl
+.jlcc
+jlcmotor/jlcpcb
